@@ -19,9 +19,10 @@ import zkewed.weather.views.Weather;
 @EnableAsync
 @EnableScheduling
 public class AppConfig {
-    public static void main(String[] args) {
+
+    public  void run() {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-        Weather w=new Weather();
+        Weather w = new Weather();
         w.setVisible(true);
     }
 }
