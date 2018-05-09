@@ -6,7 +6,14 @@
 package zkewed.weather.views;
 
 import java.awt.Color;
+import java.awt.Frame;
+import java.util.List;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.swing.JOptionPane;
+import javax.swing.UnsupportedLookAndFeelException;
+import javax.swing.table.DefaultTableModel;
+import zkewed.weather.model.City;
 import zkewed.weather.service.CityService;
 import zkewed.weather.service.WeatherService;
 
@@ -14,17 +21,22 @@ import zkewed.weather.service.WeatherService;
  *
  * @author DELL
  */
-public class Weather extends javax.swing.JFrame {
+public class WeatherView extends javax.swing.JFrame {
 
     private int xMouse;
     private int yMouse;
+    private DefaultTableModel dtm;
 
     /**
      * Creates new form Weather
      */
-    public Weather() {
+    public WeatherView() {
         initComponents();
         setLocationRelativeTo(null);
+        dtm = (DefaultTableModel) townTable.getModel();
+        lordData();
+        TrayClass t=new TrayClass();
+       
 
     }
 
@@ -46,6 +58,9 @@ public class Weather extends javax.swing.JFrame {
         addButton = new javax.swing.JPanel();
         addLabel = new javax.swing.JLabel();
         jSeparator1 = new javax.swing.JSeparator();
+        minimizePanel = new javax.swing.JPanel();
+        minibtn = new javax.swing.JLabel();
+        jLabel2 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setUndecorated(true);
@@ -61,13 +76,22 @@ public class Weather extends javax.swing.JFrame {
         });
 
         jPanel1.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel1.setBorder(javax.swing.BorderFactory.createLineBorder(new java.awt.Color(0, 153, 153), 2));
 
         cityText.setFont(new java.awt.Font("Tahoma", 0, 14)); // NOI18N
         cityText.setDisabledTextColor(new java.awt.Color(0, 153, 153));
+        cityText.addFocusListener(new java.awt.event.FocusAdapter() {
+            public void focusGained(java.awt.event.FocusEvent evt) {
+                cityTextFocusGained(evt);
+            }
+            public void focusLost(java.awt.event.FocusEvent evt) {
+                cityTextFocusLost(evt);
+            }
+        });
 
         jLabel1.setFont(new java.awt.Font("Verdana", 0, 18)); // NOI18N
         jLabel1.setForeground(new java.awt.Color(0, 153, 153));
-        jLabel1.setText("Zkewed Weather App");
+        jLabel1.setText(" Weather App");
 
         runBtn.setText("Run Weather Manual");
         runBtn.addActionListener(new java.awt.event.ActionListener() {
@@ -84,7 +108,7 @@ public class Weather extends javax.swing.JFrame {
                 {null}
             },
             new String [] {
-                "<center>City Name</center> "
+                "City Name"
             }
         ) {
             boolean[] canEdit = new boolean [] {
@@ -123,60 +147,100 @@ public class Weather extends javax.swing.JFrame {
 
         addLabel.setFont(new java.awt.Font("Monotype.com", 1, 14)); // NOI18N
         addLabel.setForeground(new java.awt.Color(0, 153, 153));
+        addLabel.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         addLabel.setText("Submit");
         addButton.add(addLabel);
-        addLabel.setBounds(80, 0, 70, 40);
+        addLabel.setBounds(80, 0, 60, 35);
+
+        minimizePanel.setBackground(new java.awt.Color(255, 255, 255));
+        minimizePanel.setPreferredSize(new java.awt.Dimension(28, 26));
+        minimizePanel.addMouseListener(new java.awt.event.MouseAdapter() {
+            public void mouseClicked(java.awt.event.MouseEvent evt) {
+                minimizePanelMouseClicked(evt);
+            }
+            public void mouseEntered(java.awt.event.MouseEvent evt) {
+                minimizePanelMouseEntered(evt);
+            }
+            public void mouseExited(java.awt.event.MouseEvent evt) {
+                minimizePanelMouseExited(evt);
+            }
+        });
+
+        minibtn.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
+        minibtn.setIcon(new javax.swing.ImageIcon(getClass().getResource("/zkewed/weather/photos/if_minus_1303882 (2).png"))); // NOI18N
+
+        javax.swing.GroupLayout minimizePanelLayout = new javax.swing.GroupLayout(minimizePanel);
+        minimizePanel.setLayout(minimizePanelLayout);
+        minimizePanelLayout.setHorizontalGroup(
+            minimizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addComponent(minibtn, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, 28, Short.MAX_VALUE)
+        );
+        minimizePanelLayout.setVerticalGroup(
+            minimizePanelLayout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, minimizePanelLayout.createSequentialGroup()
+                .addGap(0, 0, Short.MAX_VALUE)
+                .addComponent(minibtn, javax.swing.GroupLayout.PREFERRED_SIZE, 26, javax.swing.GroupLayout.PREFERRED_SIZE))
+        );
+
+        jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/zkewed/weather/photos/rsz_zkewed.png"))); // NOI18N
 
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
-                    .addComponent(cityText, javax.swing.GroupLayout.DEFAULT_SIZE, 217, Short.MAX_VALUE)
-                    .addComponent(addButton, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
-                .addGap(83, 83, 83)
-                .addComponent(townScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 267, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(35, 35, 35))
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jLabel2, javax.swing.GroupLayout.PREFERRED_SIZE, 80, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(minimizePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addContainerGap())
+            .addGroup(jPanel1Layout.createSequentialGroup()
+                .addGap(33, 33, 33)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                        .addComponent(cityText)
+                        .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 217, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(runBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                .addComponent(townScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 280, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(32, 32, 32))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
                 .addGap(0, 0, Short.MAX_VALUE)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 641, javax.swing.GroupLayout.PREFERRED_SIZE))
-            .addGroup(jPanel1Layout.createSequentialGroup()
-                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(runBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 422, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 654, javax.swing.GroupLayout.PREFERRED_SIZE))
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addContainerGap()
-                .addComponent(jLabel1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(12, 12, 12)
-                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 10, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(minimizePanel, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addComponent(jLabel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(jLabel2, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                .addComponent(jSeparator1, javax.swing.GroupLayout.PREFERRED_SIZE, 19, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(18, 18, 18)
-                        .addComponent(townScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(59, 59, 59)
+                        .addGap(36, 36, 36)
                         .addComponent(cityText, javax.swing.GroupLayout.PREFERRED_SIZE, 32, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(18, 18, 18)
                         .addComponent(addButton, javax.swing.GroupLayout.PREFERRED_SIZE, 36, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGap(243, 243, 243)))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                .addComponent(runBtn)
-                .addGap(7, 7, 7))
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 212, Short.MAX_VALUE)
+                        .addComponent(runBtn))
+                    .addGroup(jPanel1Layout.createSequentialGroup()
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(townScrollPane, javax.swing.GroupLayout.PREFERRED_SIZE, 0, Short.MAX_VALUE)))
+                .addContainerGap())
         );
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                .addContainerGap()
+                .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -209,18 +273,25 @@ public class Weather extends javax.swing.JFrame {
 
     private void addButtonMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseClicked
 
-        if (cityText.getText() == null || cityText.getText().isEmpty()) {
-            JOptionPane.showMessageDialog(this, "Please Input Town", "Cann't Be Empty", 2);
-        } else {
-            boolean res = CityService.addCity(cityText.getText());
-            if (res != false) {
-                JOptionPane.showMessageDialog(this, "City Added Success");
-                cityText.setText("");
+        if (!(cityText.getText().equals("add city name"))) {
+            if (cityText.getText() == null || cityText.getText().isEmpty()) {
+                JOptionPane.showMessageDialog(this, "Please Input Town", "Cann't Be Empty", 2);
             } else {
-                JOptionPane.showMessageDialog(this, "City Added Fail");
-                cityText.setText("");
+                boolean res = CityService.addCity(cityText.getText());
+                if (res != false) {
+                    lordData();
+                    JOptionPane.showMessageDialog(this, "City Added Success");
+                    cityText.setText("");
+                } else {
+                    JOptionPane.showMessageDialog(this, "City Added Fail");
+                    cityText.setText("");
+                }
             }
+        } else {
+            JOptionPane.showMessageDialog(this, "Please Input Town", "Cann't Be Empty", 2);
         }
+
+
     }//GEN-LAST:event_addButtonMouseClicked
 
     private void addButtonMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_addButtonMouseEntered
@@ -237,6 +308,30 @@ public class Weather extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_addButtonMouseReleased
 
+    private void cityTextFocusGained(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cityTextFocusGained
+        if (cityText.getText().trim().equals("add city name")) {
+            cityText.setText("");
+        }
+    }//GEN-LAST:event_cityTextFocusGained
+
+    private void cityTextFocusLost(java.awt.event.FocusEvent evt) {//GEN-FIRST:event_cityTextFocusLost
+        if (cityText.getText().trim().equals("")) {
+            cityText.setText("add city name");
+        }
+    }//GEN-LAST:event_cityTextFocusLost
+
+    private void minimizePanelMouseEntered(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizePanelMouseEntered
+        minimizePanel.setBackground(new Color(0,204, 204));
+    }//GEN-LAST:event_minimizePanelMouseEntered
+
+    private void minimizePanelMouseExited(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizePanelMouseExited
+        minimizePanel.setBackground(Color.white);
+    }//GEN-LAST:event_minimizePanelMouseExited
+
+    private void minimizePanelMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_minimizePanelMouseClicked
+      this.setState(Frame.ICONIFIED);
+    }//GEN-LAST:event_minimizePanelMouseClicked
+
     /**
      * @param args the command line arguments
      */
@@ -251,7 +346,7 @@ public class Weather extends javax.swing.JFrame {
     /* Create and display the form */
 //        java.awt.EventQueue.invokeLater(new Runnable() {
 //            public void run() {
-//                new Weather().setVisible(true);
+//                new WeatherView().setVisible(true);
 //            }
 //        });
 //    }
@@ -261,10 +356,25 @@ public class Weather extends javax.swing.JFrame {
     private javax.swing.JLabel addLabel;
     private javax.swing.JTextField cityText;
     private javax.swing.JLabel jLabel1;
+    private javax.swing.JLabel jLabel2;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JSeparator jSeparator1;
+    private javax.swing.JLabel minibtn;
+    private javax.swing.JPanel minimizePanel;
     private javax.swing.JButton runBtn;
     private javax.swing.JScrollPane townScrollPane;
     private javax.swing.JTable townTable;
     // End of variables declaration//GEN-END:variables
+
+    public void lordData() {
+        CityService cityService = new CityService();
+        List<City> allCities = CityService.getAllCities();
+        dtm.setRowCount(0);
+
+        for (City city : allCities) {
+            Object[] row = {city.getCityName()};
+            dtm.addRow(row);
+        }
+    }
+
 }

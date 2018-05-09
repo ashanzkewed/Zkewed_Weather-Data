@@ -10,10 +10,10 @@ import zkewed.weather.weatherclasses.Wind;
 import zkewed.weather.weatherclasses.Visibility;
 import zkewed.weather.weatherclasses.Sun;
 import zkewed.weather.weatherclasses.Humidity;
-import zkewed.weather.weatherclasses.Weather;
+import zkewed.weather.weatherclasses.Weathers;
 import zkewed.weather.weatherclasses.LastUpdate;
 import zkewed.weather.weatherclasses.Speed;
-import zkewed.weather.weatherclasses.City;
+import zkewed.weather.weatherclasses.Citys;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -27,7 +27,7 @@ import org.w3c.dom.NodeList;
  */
 public class WeatherData
 {
-	private City city;
+	private Citys city;
 	private Clouds clouds;
 	private Direction direction;
 	private Humidity humidity;
@@ -36,7 +36,7 @@ public class WeatherData
 	private Pressure pressure;
 	private Temperature temperature;
 	private Visibility visibility;
-	private Weather weather;
+	private Weathers weather;
 	private Wind wind;
 	private Speed speed;
 	private Sun sun;
@@ -59,7 +59,7 @@ public class WeatherData
 		switch (currentTagName)
 		{
 		case "city":
-			city = new City(currentElement.getAttribute("id"), currentElement.getAttribute("name"));
+			city = new Citys(currentElement.getAttribute("id"), currentElement.getAttribute("name"));
 			break;
 		case "coord":
 			Coord coord = new Coord(currentElement.getAttribute("lon"), currentElement.getAttribute("lat"));
@@ -105,7 +105,7 @@ public class WeatherData
 					currentElement.getAttribute("mode"));
 			break;
 		case "weather":
-			weather = new Weather(currentElement.getAttribute("value"), currentElement.getAttribute("icon"),
+			weather = new Weathers(currentElement.getAttribute("value"), currentElement.getAttribute("icon"),
 					currentElement.getAttribute("number"));
 			break;
 		case "lastupdate":
@@ -163,9 +163,9 @@ public class WeatherData
 	/**
 	 * A get property for the WeatherData's city
 	 * 
-	 * @return A City object that represents the WeatherData's city
+	 * @return A Citys object that represents the WeatherData's city
 	 */
-	public City getCity()
+	public Citys getCity()
 	{
 		return city;
 	}
@@ -275,11 +275,11 @@ public class WeatherData
 	}
 
 	/**
-	 * A get property for the WeatherData's Weather
+	 * A get property for the WeatherData's Weathers
 	 * 
-	 * @return A Weather object that represents the WeatherData's Weather
+	 * @return A Weathers object that represents the WeatherData's Weathers
 	 */
-	public Weather getWeather()
+	public Weathers getWeather()
 	{
 		return weather;
 	}

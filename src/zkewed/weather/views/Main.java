@@ -5,8 +5,11 @@
  */
 package zkewed.weather.views;
 
+import java.io.IOException;
+import java.net.ServerSocket;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import zkewed.instance.SplashSingleton;
 import zkewed.weather.config.AppConfig;
 
 /**
@@ -16,7 +19,10 @@ import zkewed.weather.config.AppConfig;
 public class Main {
 
     public static void main(String[] args) {
-        Splash s = new Splash();
+     
+        AppConfig a = new AppConfig();
+//        a.run();
+        Splash s = SplashSingleton.getSplashSingleton().getSplash();
         s.setVisible(true);
         AppConfig config = new AppConfig();
         try {
@@ -25,6 +31,7 @@ public class Main {
                 s.setLoad(i);
                 if (i == 100) {
                     s.dispose();
+        
                     config.run();
                 }
             }
@@ -33,4 +40,6 @@ public class Main {
         }
 
     }
+
+   
 }

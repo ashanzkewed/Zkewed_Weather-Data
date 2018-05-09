@@ -2,11 +2,11 @@ package zkewed.weather.weatherclasses;
 
 /**
  * @author Sagie Lev, Ohad Cohen, Shiran Shem-Tov
- *
- *         A class representing City properties defined according to
- *         OpenWeatherMap.org
+
+         A class representing Citys properties defined according to
+         OpenWeatherMap.org
  */
-public class City
+public class Citys
 {
 	private String id;
 	private String name;
@@ -22,7 +22,7 @@ public class City
 	 * @param name
 	 *            Describes the name of the city
 	 */
-	public City(String ID, String name)
+	public Citys(String ID, String name)
 	{
 		setID(ID);
 		setName(name);
@@ -91,7 +91,7 @@ public class City
 	/**
 	 * A get property for the Coordinates (Coord) property
 	 * 
-	 * @return An object that describes the City geo location.
+	 * @return An object that describes the Citys geo location.
 	 */
 	public Coord getCoordinates()
 	{

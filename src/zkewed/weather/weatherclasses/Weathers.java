@@ -2,11 +2,11 @@ package zkewed.weather.weatherclasses;
 
 /**
  * @author Sagie Lev, Ohad Cohen, Shiran Shem-Tov
- *
- *         A class representing Weather conditions defined according to
- *         OpenWeatherMap.org
+
+         A class representing Weathers conditions defined according to
+         OpenWeatherMap.org
  */
-public class Weather
+public class Weathers
 {
 	private String number;
 	private String value;
@@ -23,7 +23,7 @@ public class Weather
 	 * @param number
 	 *            Describes the current weather condition ID
 	 */
-	public Weather(String value, String icon, String number)
+	public Weathers(String value, String icon, String number)
 	{
 		super();
 		setValue(value);
@@ -97,7 +97,7 @@ public class Weather
 	}
 
 	/**
-	 * A method that returns a string that describes the Weather object
+	 * A method that returns a string that describes the Weathers object
 	 */
 	@Override
 	public String toString()

@@ -5,11 +5,16 @@
  */
 package zkewed.weather.config;
 
+import java.io.IOException;
+import java.net.BindException;
+import java.net.InetAddress;
+import java.net.ServerSocket;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
-import zkewed.weather.views.Weather;
+import zkewed.instance.WeatherViewSingleton;
+import zkewed.weather.views.WeatherView;
 
 /**
  *
@@ -20,9 +25,14 @@ import zkewed.weather.views.Weather;
 @EnableScheduling
 public class AppConfig {
 
-    public  void run() {
+    public static void run() {
         ClassPathXmlApplicationContext ctx = new ClassPathXmlApplicationContext("applicationContext.xml");
-        Weather w = new Weather();
+        WeatherView w = WeatherViewSingleton.getWeatherViewSingleton().getWeatherView();
         w.setVisible(true);
     }
+
+ 
+
+    
+    
 }

@@ -6,6 +6,7 @@
 package zkewed.weather.service;
 
 import java.io.Serializable;
+import java.util.List;
 import zkewed.weather.classes.IWeatherDataService;
 import zkewed.weather.classes.Location;
 import zkewed.weather.classes.WeatherData;
@@ -30,14 +31,17 @@ public class CityService {
         return false;
     }
 
-    public static void getWeather() {
-        IWeatherDataService dataService = WeatherDataServiceFactory.getWeatherDataService(WeatherDataServiceFactory.service.OPEN_WEATHER_MAP);
-        WeatherData data;
-        try {
-            data = dataService.getWeatherData(new Location("Colombo", "LK"));
-            System.out.println(data.toString());
-        } catch (WeatherDataServiceException e) {
-            e.printStackTrace();
-        }
+//    public static void getWeather() {
+//        IWeatherDataService dataService = WeatherDataServiceFactory.getWeatherDataService(WeatherDataServiceFactory.service.OPEN_WEATHER_MAP);
+//        WeatherData data;
+//        try {
+//            data = dataService.getWeatherData(new Location("Colombo", "LK"));
+//            System.out.println(data.toString());
+//        } catch (WeatherDataServiceException e) {
+//            e.printStackTrace();
+//        }
+//    }
+    public static List<City> getAllCities() {
+        return WeatherRepo.getAllCities();
     }
 }
